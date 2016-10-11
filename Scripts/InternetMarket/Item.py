@@ -10,4 +10,6 @@ class Item:
         for field in Item.optional_fields:
             if field in kwargs:
                 setattr(self, field, kwargs[field])
-                
+
+    def __eq__(self, other):
+       return self.__dict__ == other.__dict__
