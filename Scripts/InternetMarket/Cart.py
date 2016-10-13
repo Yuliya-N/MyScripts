@@ -7,29 +7,23 @@ class Cart:
         self._items = defaultdict(int)
 
     def total(self):
+        # ---solution before optimization
         # sum_ = 0
         # dict.items() returns (key, value); item =key, qt = value
         # for item, qt in self._items.items():
         #     sum_ += item.price * qt
-        # generator expression
+        # ---generator expression
         return sum(item.price * qt for item, qt in self._items.items())
 
+    def total_qt(self):
+        return sum(self._items.values())
 
-    def total_qt(self): # no time for tests
-        return sum(qt for item, qt in self._items.items())
+    def add(self, item, qt=1):
+        self._items[item] += qt
 
-    def add(self, item, quantity=1): 
-        self._items[item.name] += quantity
-        # my tries to solve adding of the similar product
-        # if item.name in self._items.keys(): 
-        #     self._items[item.name] += quantity
-        # else:
-        #     self._items[item] += quantity
-
-    @property # iterable for item, qt in cart.items, no tests yet
-    def items(self):
-        return self._items.items()
+    def __iter__(self):
+        # cannot return self._items, becasue it cannot give next(self._items)
+        return iter(self._items)
 
     def __len__(self):
         return len(self._items)
-
