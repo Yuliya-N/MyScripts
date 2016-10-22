@@ -87,6 +87,13 @@ class CartTestCase(unittest.TestCase):
         self.cart.add(Item('item2', 20), 2)
         self.assertEqual(sum(i.price for i in self.cart), 30)
 
+    def test_discount_gt_1000(self):
+        self.cart.add(Item('item1', 100), 10)
+        self.assertEqual(self.cart.discount(), 50)
+
+    def test_discount_lt_1000(self):
+        self.cart.add(Item('item1', 10), 9)
+        self.assertEqual(self.cart.discount(), 0)
 
 if __name__ == '__main__':
     unittest.main()

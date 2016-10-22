@@ -1,4 +1,5 @@
 from collections import defaultdict
+from discounts import max_discount
 
 
 class Cart:
@@ -22,8 +23,11 @@ class Cart:
         self._items[item] += qt
 
     def __iter__(self):
-        # cannot return self._items, becasue it cannot give next(self._items)
+        # cannot retu:rn self._items, becasue it cannot give next(self._items)
         return iter(self._items)
 
     def __len__(self):
         return len(self._items)
+
+    def discount(self):
+        return max_discount(self)
