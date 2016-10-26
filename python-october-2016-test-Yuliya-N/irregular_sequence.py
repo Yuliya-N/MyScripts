@@ -1,3 +1,16 @@
+import collections
+
+
+def get_operand(value):
+    if not value:
+        return 0
+    elif isinstance(value, collections.Iterable):
+        for i in value:
+            return get_operand(i)
+    else:
+        return value
+
+
 def sum_irregular(data):
     """
     Sums all elements in passed sequence.
@@ -28,7 +41,25 @@ def sum_irregular(data):
     Returns:
         Sum of all single elements in passed args, as single number
     """
-    return
+    # ------------------------
+    isum = 0
+    for i in data:
+        if not i:
+            isum += 0
+        elif isinstance(i, collections.Iterable):
+            for t in i:
+                if not t:
+                    isum += 0
+                elif isinstance(t, collections.Iterable):
+                     for s in t:
+                        isum += s
+                else:
+                     isum += t
+        else:
+            isum += i
+    #------------------------
+        # isum += get_operand(i)
+    return isum
 
 
 def multiply_irregular(data):
@@ -59,7 +90,22 @@ def multiply_irregular(data):
     Returns:
         Multiplication of all elements in passed args, as single number
     """
-    return
+    imul = 1
+    for i in data:
+        if i is False:
+            imul *= 0
+        elif isinstance(i, collections.Iterable):
+            for t in i:
+                if t is False:
+                    imul *= 0
+                elif isinstance(t, collections.Iterable):
+                     for s in t:
+                        imul *= s
+                else:
+                     imul *= t
+        else:
+            imul *= i
+    return imul
 
 
 # code below left for your own usage and can be deleted at will

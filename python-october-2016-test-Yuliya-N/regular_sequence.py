@@ -1,3 +1,5 @@
+from operator import mul
+
 def sum_regular(data):
     """
     Sums all elements in passed sequence.
@@ -18,7 +20,7 @@ def sum_regular(data):
     Returns:
         Sum of all elements in passed args, as single number
     """
-    return
+    return sum(i for i in data)
 
 
 def multiply_regular(data):
@@ -43,7 +45,10 @@ def multiply_regular(data):
     Returns:
         Multiplication of all elements in passed args, as single number
     """
-    return
+    k = 1
+    for i in data:
+        k *= i
+    return k
 
 
 # code below left for your own usage and can be deleted at will
