@@ -33,7 +33,14 @@ def get_cost_list(shopping_list, prices):
             product_name is string
             cost is numeric
     """
-    return
+    cost_list = []
+    if shopping_list:
+        for good, weight in shopping_list:
+            if good in prices:
+                cost_list.append((good, prices[good] * weight))
+        return cost_list
+    else:
+        return None
 
 
 def get_total(shopping_list, prices):
@@ -68,7 +75,14 @@ def get_total(shopping_list, prices):
     Returns:
         Total cost as single number
     """
-    return
+    cost_total = 0
+    if len(shopping_list) > 0 and len(prices) > 0:
+        for good in shopping_list:
+            if good in prices:
+                cost_total += prices[good] * shopping_list[good]
+        return cost_total
+    else:
+        return 0
 
 
 def sorted_shopping_list(shopping_list, mapping, departments_order):
@@ -116,7 +130,21 @@ def sorted_shopping_list(shopping_list, mapping, departments_order):
     Returns:
         List of needed products, sorted by department position
     """
-    return
+    sorted_list = shopping_list
+    if len(shopping_list) > 0 and len(mapping) >0 and len(departments_order) > 0:
+        for product in shopping_list:
+            product_out = True
+            for department in mapping:
+                if department in departments_order:
+                    for products in mapping[department]:
+                        if product in products:
+                            sorted_list[departments_order.index(department)] = product
+                            product_out = False
+            if product_out:
+                shopping_list.remove(product)
+        return sorted_list
+    else:
+        return []
 
 
 # code below left for your own usage and can be deleted at will
