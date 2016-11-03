@@ -36,6 +36,13 @@ from pdb import set_trace
 from datetime import datetime
 
 
+def get_min_multidict(multi_dict, index):
+        second_values = {}
+        for key in multi_dict:
+            second_values[key] = multi_dict[key][index]
+        return min(second_values, key=second_values.get)
+
+
 class lru_cache:
     def __init__(self, cache_size=3):
         self.cache_size = cache_size
@@ -58,7 +65,8 @@ class lru_cache:
                 if len(self.cache_dict) >= self.cache_size:
                     print('Cache overflow')
                     # min(iterator, key = function that returns one argument) and that compares by min
-                    oldest_key = min(self.cache_dict, key=getitem(self.cache_dict.get, 1))
+                    # oldest_key = min(self.cache_dict, key=self.getitem(1))
+                    oldest_key = get_min_multidict(self.cache_dict, 1)
                     self.cache_dict.pop(oldest_key)
                     # self.cache_times.pop(oldest_key)
                 self.cache_dict[args] = [res, datetime.now()]
@@ -81,6 +89,7 @@ def heavy_func(x):
 print(heavy_func(10))
 print(heavy_func(10))
 print(heavy_func(2))
+print(heavy_func(10))
 print(heavy_func(1))
 # print(heavy_func(1))
 # print(heavy_func(4))
