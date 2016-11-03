@@ -40,26 +40,30 @@ class lru_cache:
     def __init__(self, cache_size=3):
         self.cache_size = cache_size
         self.cache_dict = {} # HW one dictionary with lists of values [res,count]
-        self.cache_times = {}
+        # self.cache_times = {}
 
     def __call__(self, f):
         @wraps(f)
         def wrapper(*args):
             if args in self.cache_dict:
-                self.cache_times[args] = datetime.now()
-                return self.cache_dict[args]
+                print(self.cache_dict[args][1])
+                print("Change time")
+                self.cache_dict[args][1] = datetime.now()
+                print(self.cache_dict[args][1])
+                res = self.cache_dict[args][0]
+                return 'Result: {}'.format(res), 'dict: {}'.format(self.cache_dict)
             else:
                 res = f(*args)
                 # self.cache_times[args] = 0
                 if len(self.cache_dict) >= self.cache_size:
                     print('Cache overflow')
                     # min(iterator, key = function that returns one argument) and that compares by min
-                    oldest_key = min(self.cache_times, key=self.cache_times.get)
+                    oldest_key = min(self.cache_dict, key=getitem(self.cache_dict.get, 1))
                     self.cache_dict.pop(oldest_key)
-                    self.cache_times.pop(oldest_key)
-                self.cache_dict[args] = res
-                self.cache_times[args] = datetime.now()
-            return 'Result: {}'.format(res), 'dict: {}'.format(self.cache_dict), 'times: {}'.format(self.cache_times)
+                    # self.cache_times.pop(oldest_key)
+                self.cache_dict[args] = [res, datetime.now()]
+                #self.cache_times[args] = datetime.now()
+            return 'Result: {}'.format(res), 'dict: {}'.format(self.cache_dict)
         return wrapper
 
 
@@ -73,9 +77,9 @@ def heavy_func(x):
     return x
 
 
-x = lru_cache(3)
-print(heavy_func(3))
-# print(heavy_func(3))
+# x = lru_cache(3)
+print(heavy_func(10))
+print(heavy_func(10))
 print(heavy_func(2))
 print(heavy_func(1))
 # print(heavy_func(1))
