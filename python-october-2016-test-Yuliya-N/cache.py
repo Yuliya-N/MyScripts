@@ -33,6 +33,7 @@ Bonus: make your cache persistent, so caching works between python runs,
 from time import sleep
 from functools import wraps
 from pdb import set_trace
+from datetime import datetime
 
 
 class lru_cache:
@@ -45,24 +46,24 @@ class lru_cache:
         @wraps(f)
         def wrapper(*args):
             if args in self.cache_dict:
-                self.cache_times[args] = self.cache_times[args] + 1
+                self.cache_times[args] = datetime.now()
                 return self.cache_dict[args]
             else:
                 res = f(*args)
-                self.cache_times[args] = 0
-                if len(self.cache_times) >= self.cache_size:
+                # self.cache_times[args] = 0
+                if len(self.cache_dict) >= self.cache_size:
                     print('Cache overflow')
                     # min(iterator, key = function that returns one argument) and that compares by min
-                    min_times_key = min(self.cache_dict, key = self.cache_dict.get)
-                    self.cache_dict.pop(min_times_key)
-                    self.cache_times.pop(min_times_key)
+                    oldest_key = min(self.cache_times, key=self.cache_times.get)
+                    self.cache_dict.pop(oldest_key)
+                    self.cache_times.pop(oldest_key)
                 self.cache_dict[args] = res
-                self.cache_times[args] = self.cache_times[args] + 1
+                self.cache_times[args] = datetime.now()
             return 'Result: {}'.format(res), 'dict: {}'.format(self.cache_dict), 'times: {}'.format(self.cache_times)
         return wrapper
 
 
-@lru_cache(10)
+@lru_cache(2)
 def heavy_func(x):
     """
      Function Description: slow function to test lru_cache
@@ -72,17 +73,17 @@ def heavy_func(x):
     return x
 
 
-# x = lru_cache2(3)
-# print(slow_func(3))
-# print(slow_func(3))
-# print(slow_func(2))
-# print(slow_func(1))
-# print(slow_func(1))
-# print(slow_func(4))
-# print(slow_func(4))
+x = lru_cache(3)
+print(heavy_func(3))
+# print(heavy_func(3))
+print(heavy_func(2))
+print(heavy_func(1))
+# print(heavy_func(1))
+# print(heavy_func(4))
+# print(heavy_func(4))
 # print(x.__dict__)
-#help(slow_func)
-#print(slow_func)
+#help(heavy_func)
+#print(heavy_func)
 # heavy_func(3)
 
 
