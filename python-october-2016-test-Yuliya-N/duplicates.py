@@ -23,7 +23,12 @@ def remove_duplicates(data):
     Returns:
         List with all duplicates removed
     """
-    return
+    #unique_list = [ch for ch in data if ch not in unique_list]
+    unique_list = []
+    for ch in data:
+    	if ch not in unique_list:
+    		unique_list.append(ch)
+    return unique_list
 
 
 def get_duplicates(data):
@@ -43,7 +48,11 @@ def get_duplicates(data):
     Returns:
         Dictionary with duplicate values as keys, occurence count as values
     """
-    return
+    duplicates = {}
+    for ch in data:
+    	if data.count(ch) > 1:
+    		duplicates[ch] = data.count(ch)
+    return duplicates
 
 
 # code below left for your own usage and can be deleted at will
